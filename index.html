@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DOTHING — Tasks, Done</title>
   <meta name="description" content="Stop managing. Start doing. The simplest way to get things done on iPhone." />
-  <!-- Open Graph / Social Media -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://dothing.app/" />
-<meta property="og:title" content="DOTHING — Tasks, Done" />
-<meta property="og:description" content="Stop managing. Start doing. The simplest way to get things done on iPhone." />
-<meta property="og:image" content="https://dothing.app/og-image.png" />
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:url" content="https://dothing.app/" />
-<meta name="twitter:title" content="DOTHING — Tasks, Done" />
-<meta name="twitter:description" content="Stop managing. Start doing." />
-<meta name="twitter:image" content="https://dothing.app/og-image.png" />
-
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dothing.app/" />
+  <meta property="og:title" content="DOTHING — Tasks, Done" />
+  <meta property="og:description" content="Stop managing. Start doing. The simplest way to get things done on iPhone." />
+  <meta property="og:image" content="https://dothing.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://dothing.app/" />
+  <meta name="twitter:title" content="DOTHING — Tasks, Done" />
+  <meta name="twitter:description" content="Stop managing. Start doing." />
+  <meta name="twitter:image" content="https://dothing.app/og-image.png" />
   <meta name="apple-itunes-app" content="app-id=6761752907">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,7 +31,6 @@
     :root {
       --bg: #F0F0F0;
       --text: #000000;
-      --footer-text: rgba(0, 0, 0, 0.38);
     }
 
     html { height: 100%; }
@@ -53,7 +47,6 @@
     body.dark {
       --bg: #000000;
       --text: #ffffff;
-      --footer-text: rgba(255, 255, 255, 0.38);
     }
 
     .hero {
@@ -129,6 +122,18 @@
       display: block;
     }
 
+    .ph-badge {
+  position: absolute;
+  bottom: clamp(3.5rem, 7vh, 5rem);
+  right: clamp(1.5rem, 8vw, 9rem);
+}
+
+    .ph-badge img {
+      width: 200px;
+      height: auto;
+      display: block;
+    }
+
     .footer {
       position: absolute;
       bottom: 0;
@@ -155,6 +160,7 @@
 
     .headline,
     .badge-link,
+    .ph-badge,
     .footer {
       opacity: 0;
       transform: translateY(12px);
@@ -163,7 +169,8 @@
 
     .headline   { animation-delay: 0.1s; }
     .badge-link { animation-delay: 0.22s; }
-    .footer     { animation-delay: 0.3s; }
+    .ph-badge   { animation-delay: 0.3s; }
+    .footer     { animation-delay: 0.35s; }
 
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
@@ -203,10 +210,14 @@
       .badge-link img {
         height: 48px;
       }
+
+      .ph-badge {
+        display: none;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, .headline, .badge-link, .footer {
+      *, .headline, .badge-link, .ph-badge, .footer {
         animation: none !important;
         transition: none !important;
         opacity: 1 !important;
@@ -216,14 +227,13 @@
   </style>
 
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5E3XPWFTD4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-5E3XPWFTD4');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5E3XPWFTD4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5E3XPWFTD4');
+  </script>
 </head>
 <body>
 
@@ -257,6 +267,17 @@
       </a>
     </div>
 
+    <!-- Product Hunt Badge -->
+    <div class="ph-badge">
+      <a href="https://www.producthunt.com/products/dothing-tasks-done/reviews/new?utm_source=badge-product_review&utm_medium=badge&utm_source=badge-dothing&#0045;tasks&#0045;done" target="_blank" rel="noopener">
+        <img id="ph-badge-img"
+             src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=dark"
+             alt="DOTHING on Product Hunt"
+             width="200"
+             height="43" />
+      </a>
+    </div>
+
     <footer class="footer">
       <a href="https://premgurusamy.github.io/dothing/"
          target="_blank"
@@ -268,9 +289,10 @@
 
   <script>
     (function () {
-      var badge = document.getElementById('app-badge');
-      var hero  = document.getElementById('hero-bg');
-      var dark  = window.matchMedia('(prefers-color-scheme: dark)');
+      var badge    = document.getElementById('app-badge');
+      var phBadge  = document.getElementById('ph-badge-img');
+      var hero     = document.getElementById('hero-bg');
+      var dark     = window.matchMedia('(prefers-color-scheme: dark)');
 
       function update() {
         var isDark = dark.matches;
@@ -279,7 +301,10 @@
           hero.src = isDark ? 'hero-dark.png' : 'hero-light.png';
           hero.onload = function () { hero.style.opacity = '1'; };
         }, 300);
-        badge.src = isDark ? 'badge-light.svg' : 'badge-dark.svg';
+        badge.src   = isDark ? 'badge-light.svg' : 'badge-dark.svg';
+        phBadge.src = isDark
+          ? 'https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=dark'
+          : 'https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=light';
         document.body.classList.toggle('dark', isDark);
       }
 
