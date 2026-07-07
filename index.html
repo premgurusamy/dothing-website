@@ -94,6 +94,26 @@
       transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* Cycling word: projects. → tags. → folders. */
+    .cycle-word {
+      display: inline-block;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cycle-word.is-out {
+      opacity: 0;
+      transform: translateY(-0.35em);
+    }
+
+    .cycle-word.is-in {
+      opacity: 0;
+      transform: translateY(0.35em);
+      transition: none;
+    }
+
     .headline-large {
       font-family: 'Zalando Sans Expanded', sans-serif;
       font-weight: 700;
@@ -250,8 +270,8 @@
 
     <div class="hero-content">
       <div class="headline">
-        <span class="headline-small">Stop managing.</span>
-        <span class="headline-large">Start<br>doing.</span>
+        <span class="headline-small">No <span id="cycle-word" class="cycle-word">projects.</span></span>
+        <span class="headline-large">Just<br>tasks.</span>
       </div>
 
       <a class="badge-link"
@@ -310,6 +330,38 @@
 
       update();
       dark.addEventListener('change', update);
+    })();
+
+    /* Cycling word: projects. → tags. → folders. */
+    (function () {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (reduced.matches) return;
+
+      var el = document.getElementById('cycle-word');
+      var words = ['projects.', 'tags.', 'folders.'];
+      var index = 0;
+
+      var HOLD = 2000;      /* time each word stays fully visible */
+      var TRANSITION = 300; /* must match .cycle-word CSS transition */
+
+      function cycle() {
+        el.classList.add('is-out');
+
+        setTimeout(function () {
+          index = (index + 1) % words.length;
+          el.textContent = words[index];
+
+          el.classList.remove('is-out');
+          el.classList.add('is-in');
+
+          /* force reflow so is-in position registers before transitioning to rest */
+          void el.offsetWidth;
+
+          el.classList.remove('is-in');
+        }, TRANSITION);
+      }
+
+      setInterval(cycle, HOLD + TRANSITION);
     })();
   </script>
 
