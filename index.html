@@ -12,12 +12,15 @@
   <meta property="og:url" content="https://dothing.app/" />
   <meta property="og:title" content="DOTHING — Tasks, Done" />
   <meta property="og:description" content="Less managing. More doing. The simplest way to get things done on iPhone." />
-  <meta property="og:image" content="https://dothing.app/og-image.png" />
+  <meta property="og:image" content="https://dothing.app/og-image.png?v=2" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Less managing. More doing. DOTHING on an iPhone, held in a hand." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://dothing.app/" />
   <meta name="twitter:title" content="DOTHING — Tasks, Done" />
   <meta name="twitter:description" content="Less managing. More doing." />
-  <meta name="twitter:image" content="https://dothing.app/og-image.png" />
+  <meta name="twitter:image" content="https://dothing.app/og-image.png?v=2" />
   <meta name="apple-itunes-app" content="app-id=6761752907">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -152,10 +155,20 @@
     .footer a { transition: opacity 0.2s ease; }
     .footer a:hover { opacity: 0.6; }
 
-    /* ── Phone: text on top, the hand below ── */
+    /*
+      ── Phone: text on top, the hand below ──
+      Sized by the width alone, so the text sits exactly as in the mockup.
+      Safari's bars leave less than the mockup's 852 of height; the page
+      then scrolls a little to the bottom of the hand and the links.
+      Tablets stop growing at 1.3×.
+    */
     @media (max-aspect-ratio: 1/1), (max-width: 699px) {
+      html, body { height: auto; }
+      body { overflow: visible; }
+      .page,
+      .stage { --u: min(calc(100vw / 393), 1.3px); }
+      .page { height: max(calc(var(--vh) * 100), calc(852 * var(--u))); }
       .stage {
-        --u: min(calc(100vw / 393), calc(var(--vh) * 100 / 852));
         width: calc(393 * var(--u));
         height: calc(852 * var(--u));
       }
