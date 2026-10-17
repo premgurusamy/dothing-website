@@ -2,247 +2,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <title>DOTHING — Tasks, Done</title>
-  <meta name="description" content="Stop managing. Start doing. The simplest way to get things done on iPhone." />
+  <meta name="description" content="Less managing. More doing. The simplest way to get things done on iPhone." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://dothing.app/" />
   <meta property="og:title" content="DOTHING — Tasks, Done" />
-  <meta property="og:description" content="Stop managing. Start doing. The simplest way to get things done on iPhone." />
+  <meta property="og:description" content="Less managing. More doing. The simplest way to get things done on iPhone." />
   <meta property="og:image" content="https://dothing.app/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://dothing.app/" />
   <meta name="twitter:title" content="DOTHING — Tasks, Done" />
-  <meta name="twitter:description" content="Stop managing. Start doing." />
+  <meta name="twitter:description" content="Less managing. More doing." />
   <meta name="twitter:image" content="https://dothing.app/og-image.png" />
   <meta name="apple-itunes-app" content="app-id=6761752907">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Inter stands in for Apple's own font on Windows and Android. -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preload" as="image" type="image/avif"
+        imagesrcset="hand-1000.avif 1000w, hand-1700.avif 1700w"
+        imagesizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #F0F0F0;
+      --bg: #FFFFFF;
       --text: #000000;
+      --grey: #86868B;
+      --vh: 1vh;
+    }
+    @supports (height: 1svh) {
+      :root { --vh: 1svh; }
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #000000; --text: #FFFFFF; }
     }
 
-    html { height: 100%; }
+    html, body { height: 100%; }
 
     body {
-      height: 100%;
-      background-color: var(--bg);
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
     }
 
-    body.dark {
-      --bg: #000000;
-      --text: #ffffff;
-    }
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-    .hero {
+    /*
+      The page is drawn on a stage the size of the mockup, scaled to fit the
+      window and set on its bottom edge, so the hand always meets the bottom.
+      Desktop: 2000 × 1422. Phone: 393 × 852. One unit (--u) is one mockup pixel.
+    */
+    .page {
       position: relative;
-      width: 100%;
-      height: 100dvh;
-      min-height: 500px;
+      height: calc(var(--vh) * 100);
       overflow: hidden;
     }
 
-    .hero-bg {
+    .stage {
+      --u: min(calc(100vw / 2000), calc(var(--vh) * 100 / 1422));
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
+      left: 50%;
+      bottom: 0;
+      width: calc(2000 * var(--u));
+      height: calc(1422 * var(--u));
+      transform: translateX(-50%);
+    }
+
+    .copy {
+      position: absolute;
+      left: calc(250 * var(--u));
+      top: calc(476 * var(--u));
+      z-index: 1;
+    }
+
+    h1 { font-weight: 700; }
+
+    .less {
       display: block;
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .hero-content {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 clamp(1.5rem, 8vw, 9rem);
-      max-width: 55%;
-    }
-
-    .headline {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
-
-    .headline-small {
-      font-family: 'Zalando Sans Expanded', sans-serif;
-      font-weight: 400;
-      font-size: clamp(1.5rem, 1.62vw + 0.675rem, 2.025rem);
+      font-size: calc(44 * var(--u));
+      font-weight: 600;
+      line-height: 1.2;
       letter-spacing: -0.01em;
-      color: var(--text);
-      margin-bottom: 1rem;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--grey);
     }
 
-    /* Cycling word: projects. → tags. → folders. */
-    .cycle-word {
-      display: inline-block;
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .more {
+      display: block;
+      margin-top: calc(20 * var(--u));
+      font-size: calc(134 * var(--u));
+      line-height: 0.866;
+      letter-spacing: -0.02em;
     }
 
-    .cycle-word.is-out {
-      opacity: 0;
-      transform: translateY(-0.35em);
-    }
-
-    .cycle-word.is-in {
-      opacity: 0;
-      transform: translateY(0.35em);
-      transition: none;
-    }
-
-    .headline-large {
-      font-family: 'Zalando Sans Expanded', sans-serif;
-      font-weight: 700;
-      font-size: clamp(3rem, 6vw + 1.5rem, 11rem);
-      letter-spacing: -0.035em;
-      line-height: 0.88;
-      color: var(--text);
-      margin-bottom: 2rem;
-      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .badge-link {
-      display: inline-flex;
+    .badge {
+      display: block;
       width: fit-content;
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
+      margin-top: calc(68 * var(--u));
       transition: opacity 0.2s ease, transform 0.2s ease;
     }
-
-    .badge-link:hover  { opacity: 0.75; transform: translateY(-1px); }
-    .badge-link:active { opacity: 0.5;  transform: translateY(0); }
-
-    .badge-link img {
-      height: clamp(64px, 4.5vh, 84px);
-      width: auto;
+    .badge:hover  { opacity: 0.75; transform: translateY(-1px); }
+    .badge:active { opacity: 0.5; transform: none; }
+    .badge picture { display: block; }
+    .badge img {
       display: block;
+      height: calc(96 * var(--u));
+      width: auto;
     }
 
-    .ph-badge {
-  position: absolute;
-  bottom: clamp(3.5rem, 7vh, 5rem);
-  right: clamp(1.5rem, 8vw, 9rem);
-}
+    .note {
+      margin-top: calc(18 * var(--u));
+      font-size: max(calc(21 * var(--u)), min(12px, calc(29 * var(--u))));
+      line-height: 1.3;
+      color: var(--grey);
+    }
 
-    .ph-badge img {
-      width: 200px;
-      height: auto;
+    .hand {
+      position: absolute;
+      left: calc(650 * var(--u));
+      bottom: 0;
+      width: calc(977 * var(--u));
+    }
+    .hand img {
       display: block;
+      width: 100%;
+      height: auto;
     }
 
     .footer {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      left: calc(112 * var(--u));
+      right: calc(114 * var(--u));
+      bottom: calc(111 * var(--u));
+      z-index: 1;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 0 clamp(1.5rem, 8vw, 9rem) clamp(1rem, 2.5vh, 2rem);
+      font-size: max(13px, calc(21 * var(--u)));
+      line-height: 1.2;
+    }
+    .footer a { transition: opacity 0.2s ease; }
+    .footer a:hover { opacity: 0.6; }
+
+    /* ── Phone: text on top, the hand below ── */
+    @media (max-aspect-ratio: 1/1), (max-width: 699px) {
+      .stage {
+        --u: min(calc(100vw / 393), calc(var(--vh) * 100 / 852));
+        width: calc(393 * var(--u));
+        height: calc(852 * var(--u));
+      }
+      .copy { left: calc(48 * var(--u)); top: calc(47.5 * var(--u)); }
+      .less { font-size: calc(24.4 * var(--u)); }
+      .more { margin-top: calc(12 * var(--u)); font-size: calc(64 * var(--u)); }
+      .badge { margin-top: calc(24.5 * var(--u)); }
+      .badge img { height: calc(48 * var(--u)); }
+      .note { margin-top: calc(15 * var(--u)); font-size: calc(14.5 * var(--u)); }
+      .hand { left: calc(24.8 * var(--u)); width: calc(425 * var(--u)); }
+      .footer {
+        left: calc(24.5 * var(--u));
+        right: calc(24.5 * var(--u));
+        bottom: calc(24 * var(--u));
+        font-size: calc(14.8 * var(--u));
+      }
     }
 
-    .footer a {
-      font-family: 'Zalando Sans Expanded', sans-serif;
-      font-size: clamp(0.75rem, 0.8vw + 0.3rem, 0.9rem);
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      color: var(--text);
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: color 0.2s ease;
+    /* ── Arrival ── */
+    .copy > *, .footer {
+      animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     }
+    .copy .badge { animation-delay: 0.08s; }
+    .copy .note  { animation-delay: 0.12s; }
+    .footer      { animation-delay: 0.25s; }
+    .hand        { animation: lift 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
 
-    .footer a:hover { color: var(--text); }
-
-    .headline,
-    .badge-link,
-    .ph-badge,
-    .footer {
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
     }
-
-    .headline   { animation-delay: 0.1s; }
-    .badge-link { animation-delay: 0.22s; }
-    .ph-badge   { animation-delay: 0.3s; }
-    .footer     { animation-delay: 0.35s; }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── MOBILE ── */
-    @media (max-width: 680px) {
-      .hero-bg {
-        object-fit: cover;
-        object-position: 70% top;
-        inset: auto;
-        top: 15%;
-        left: -12.5%;
-        width: 125%;
-        height: 95%;
-      }
-
-      .hero-content {
-        justify-content: flex-start;
-        padding-top: clamp(3rem, 12vw, 5rem);
-        padding-left: clamp(1.2rem, 5vw, 2rem);
-        padding-right: clamp(1.2rem, 5vw, 2rem);
-        max-width: 100%;
-        gap: 0;
-      }
-
-      .headline-small {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .headline-large {
-        font-size: 5rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .badge-link img {
-        height: 48px;
-      }
-
-      .ph-badge {
-        display: none;
-      }
+    @keyframes lift {
+      from { opacity: 0; transform: translateY(6%); }
+      to   { opacity: 1; transform: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, .headline, .badge-link, .ph-badge, .footer {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-      }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
     }
   </style>
 
@@ -257,113 +208,46 @@
 </head>
 <body>
 
-  <div class="hero">
+  <main class="page">
+    <div class="stage">
 
-    <img
-      id="hero-bg"
-      class="hero-bg"
-      src="hero-light.png"
-      alt=""
-      aria-hidden="true"
-      fetchpriority="high"
-    />
+      <div class="copy">
+        <h1>
+          <span class="less">Less managing.</span>
+          <span class="more">More<br>doing.</span>
+        </h1>
 
-    <div class="hero-content">
-      <div class="headline">
-        <span class="headline-small">No <span id="cycle-word" class="cycle-word">projects.</span></span>
-        <span class="headline-large">Just<br>tasks.</span>
+        <a class="badge"
+           href="https://apps.apple.com/app/dothing-tasks-done/id6761752907"
+           target="_blank"
+           rel="noopener"
+           aria-label="Download DOTHING on the App Store">
+          <picture>
+            <source srcset="badge-light.svg" media="(prefers-color-scheme: dark)" />
+            <img src="badge-dark.svg" alt="Download on the App Store" width="288" height="96" />
+          </picture>
+        </a>
+
+        <p class="note">Free on iPhone · iOS 26 or later</p>
       </div>
 
-      <a class="badge-link"
-         href="https://apps.apple.com/app/dothing-tasks-done/id6761752907"
-         target="_blank"
-         rel="noopener"
-         aria-label="Download DOTHING on the App Store">
-        <img id="app-badge"
-             src="badge-dark.svg"
-             alt="Download on the App Store"
-             width="135"
-             height="45" />
-      </a>
+      <picture class="hand">
+        <source type="image/avif"
+                srcset="hand-1000.avif 1000w, hand-1700.avif 1700w"
+                sizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
+        <img src="hand.png"
+             alt="DOTHING on an iPhone: today's tasks, with apps blocked while one is being worked on"
+             width="1914" height="2297"
+             fetchpriority="high" />
+      </picture>
+
+      <footer class="footer">
+        <a href="https://premgurusamy.github.io/dothing/" target="_blank" rel="noopener">Terms &amp; Privacy</a>
+        <a href="mailto:herepremg@gmail.com">Get Support</a>
+      </footer>
+
     </div>
-
-    <!-- Product Hunt Badge -->
-    <div class="ph-badge">
-      <a href="https://www.producthunt.com/products/dothing-tasks-done/reviews/new?utm_source=badge-product_review&utm_medium=badge&utm_source=badge-dothing&#0045;tasks&#0045;done" target="_blank" rel="noopener">
-        <img id="ph-badge-img"
-             src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=dark"
-             alt="DOTHING on Product Hunt"
-             width="200"
-             height="43" />
-      </a>
-    </div>
-
-    <footer class="footer">
-      <a href="https://premgurusamy.github.io/dothing/"
-         target="_blank"
-         rel="noopener">Terms &amp; Privacy</a>
-      <a href="mailto:herepremg@gmail.com">Get Support</a>
-    </footer>
-
-  </div>
-
-  <script>
-    (function () {
-      var badge    = document.getElementById('app-badge');
-      var phBadge  = document.getElementById('ph-badge-img');
-      var hero     = document.getElementById('hero-bg');
-      var dark     = window.matchMedia('(prefers-color-scheme: dark)');
-
-      function update() {
-        var isDark = dark.matches;
-        hero.style.opacity = '0';
-        setTimeout(function () {
-          hero.src = isDark ? 'hero-dark.png' : 'hero-light.png';
-          hero.onload = function () { hero.style.opacity = '1'; };
-        }, 300);
-        badge.src   = isDark ? 'badge-light.svg' : 'badge-dark.svg';
-        phBadge.src = isDark
-          ? 'https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=dark'
-          : 'https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1258005&theme=light';
-        document.body.classList.toggle('dark', isDark);
-      }
-
-      update();
-      dark.addEventListener('change', update);
-    })();
-
-    /* Cycling word: projects. → tags. → folders. */
-    (function () {
-      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (reduced.matches) return;
-
-      var el = document.getElementById('cycle-word');
-      var words = ['projects.', 'tags.', 'folders.'];
-      var index = 0;
-
-      var HOLD = 2000;      /* time each word stays fully visible */
-      var TRANSITION = 300; /* must match .cycle-word CSS transition */
-
-      function cycle() {
-        el.classList.add('is-out');
-
-        setTimeout(function () {
-          index = (index + 1) % words.length;
-          el.textContent = words[index];
-
-          el.classList.remove('is-out');
-          el.classList.add('is-in');
-
-          /* force reflow so is-in position registers before transitioning to rest */
-          void el.offsetWidth;
-
-          el.classList.remove('is-in');
-        }, TRANSITION);
-      }
-
-      setInterval(cycle, HOLD + TRANSITION);
-    })();
-  </script>
+  </main>
 
 </body>
 </html>
