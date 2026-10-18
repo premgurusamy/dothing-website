@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://dothing.app/" />
   <meta property="og:title" content="DOTHING — Tasks, Done" />
   <meta property="og:description" content="Less managing. More doing. The simplest way to get things done on iPhone." />
-  <meta property="og:image" content="https://dothing.app/og-image.png?v=2" />
+  <meta property="og:image" content="https://dothing.app/og-image.png?v=3" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Less managing. More doing. DOTHING on an iPhone, held in a hand." />
@@ -20,7 +20,7 @@
   <meta name="twitter:url" content="https://dothing.app/" />
   <meta name="twitter:title" content="DOTHING — Tasks, Done" />
   <meta name="twitter:description" content="Less managing. More doing." />
-  <meta name="twitter:image" content="https://dothing.app/og-image.png?v=2" />
+  <meta name="twitter:image" content="https://dothing.app/og-image.png?v=3" />
   <meta name="apple-itunes-app" content="app-id=6761752907">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,8 +28,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="preload" as="image" type="image/avif"
-        imagesrcset="hand-1000.avif 1000w, hand-1700.avif 1700w"
+  <link rel="preload" as="image" type="image/avif" media="(prefers-color-scheme: light)"
+        imagesrcset="hand-light-1000.avif 1000w, hand-light-1700.avif 1700w"
+        imagesizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
+  <link rel="preload" as="image" type="image/avif" media="(prefers-color-scheme: dark)"
+        imagesrcset="hand-dark-1000.avif 1000w, hand-dark-1700.avif 1700w"
         imagesizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -244,12 +247,17 @@
         <p class="note">Free on iPhone · iOS 26 or later</p>
       </div>
 
+      <!-- The phone's screen follows light and dark, like the page. -->
       <picture class="hand">
-        <source type="image/avif"
-                srcset="hand-1000.avif 1000w, hand-1700.avif 1700w"
+        <source type="image/avif" media="(prefers-color-scheme: dark)"
+                srcset="hand-dark-1000.avif 1000w, hand-dark-1700.avif 1700w"
                 sizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
-        <img src="hand.png"
-             alt="DOTHING on an iPhone: today's tasks, with apps blocked while one is being worked on"
+        <source media="(prefers-color-scheme: dark)" srcset="hand-dark.png" />
+        <source type="image/avif"
+                srcset="hand-light-1000.avif 1000w, hand-light-1700.avif 1700w"
+                sizes="(max-aspect-ratio: 1/1) 108vw, (max-width: 699px) 108vw, 49vw" />
+        <img src="hand-light.png"
+             alt="DOTHING on an iPhone, showing today's tasks"
              width="1914" height="2297"
              fetchpriority="high" />
       </picture>
